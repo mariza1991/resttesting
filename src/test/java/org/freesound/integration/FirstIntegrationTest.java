@@ -8,6 +8,8 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.open;
 
@@ -19,7 +21,7 @@ public class FirstIntegrationTest {
 
     private static final String API_KEY = "rcBTauOX7I4qJbioXWtd04GWp1f9lLq9RFd2rXpJ";
 
-    private static String query = "dog";
+    private static String query = "cat";
 
     private static String filename;
     private static String username;
@@ -40,6 +42,7 @@ public class FirstIntegrationTest {
 
         filename = JsonPath.read(json, "$.results[0].name");
         username = JsonPath.read(json, "$.results[0].username");
+        soundId = String.valueOf((Integer) JsonPath.read(json, "$.results[0].id"));
     }
 
     @Test
@@ -47,5 +50,12 @@ public class FirstIntegrationTest {
     {
         open("/search/?q=" + query);
         $$("div.sound_filename").get(0).should(text(filename));
+    }
+
+    @Test
+    public void searchResultTest()
+    {
+        open(URL + String.format("/people/%s/sounds/%s/", username, soundId));
+        $("#single_sample_player .play").should(visible);
     }
 }
