@@ -1,6 +1,7 @@
 package net.dictionary.integration;
 
 import com.codeborne.selenide.Configuration;
+import net.dictionary.integration.pages.TranslatePage;
 import org.testng.annotations.Test;
 
 import static com.codeborne.selenide.Condition.text;
@@ -15,7 +16,7 @@ public class HomeworkIntegrationTest extends BaseTest {
     @Test
     public void integrationTest() {
         open("https://translate.yandex.ru/");
-        $(byId("fakeArea")).setValue(input).pressEnter();
-        $(byId("translation")).shouldHave(text(expectedTranslate));
+        $(byId(TranslatePage.INPUT_FIELD)).setValue(input).pressEnter();
+        $(byId(TranslatePage.OUTPUT_FIELD)).shouldHave(text(expectedTranslate));
     }
 }
